@@ -5,7 +5,7 @@ import os
 
 LOG_DIR="housing_logs"
 
-CURRENT_TIME_STAMP=f"{datetime.now().strftime('%Y-%m-%d-_H-%M-%S')}"
+CURRENT_TIME_STAMP=f"{datetime.now().strftime('%Y-%m-%d-_%H-%M-%S')}"
 
 LOG_FILE_NAME=f"log_{CURRENT_TIME_STAMP}.log"
 
