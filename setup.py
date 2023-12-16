@@ -14,7 +14,7 @@ REQUIREMENT_FILE_NAME="requirements.txt"
 
 def get_requirements_lists():
     with open(REQUIREMENT_FILE_NAME) as requirement_file:
-        return requirement_file.readlines().remove("e .")
+        return requirement_file.readlines().remove("-e .")
 
 
 setup(
