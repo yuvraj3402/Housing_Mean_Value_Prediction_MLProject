@@ -21,7 +21,7 @@ def write_yaml_file(file_path:str,data:dict=None):
             if data is not None:
                 yaml.dump(data,yaml_file)
     except Exception as e:
-        raise HousingException(e,sys)
+        raise HousingException(e,sys) from e
     
 
 

@@ -35,6 +35,10 @@ class HousingData:
         except Exception as e:
             raise HousingException(e, sys) from e
 
+
+
+
+
     def get_housing_input_data_frame(self):
 
         try:
@@ -42,6 +46,9 @@ class HousingData:
             return pd.DataFrame(housing_input_dict)
         except Exception as e:
             raise HousingException(e, sys) from e
+
+
+
 
     def get_housing_data_as_dict(self):
         try:
@@ -60,6 +67,9 @@ class HousingData:
             raise HousingException(e, sys)
 
 
+
+
+
 class HousingPredictor:
 
     def __init__(self, model_dir: str):
@@ -67,6 +77,8 @@ class HousingPredictor:
             self.model_dir = model_dir
         except Exception as e:
             raise HousingException(e, sys) from e
+
+
 
     def get_latest_model_path(self):
         try:

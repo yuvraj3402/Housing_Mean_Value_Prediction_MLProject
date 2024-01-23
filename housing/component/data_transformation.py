@@ -61,17 +61,8 @@ class FeatureGenerator(BaseEstimator, TransformerMixin):
         except Exception as e:
             raise HousingException(e, sys) from e
 
-
-
-
-
-
     def fit(self, X, y=None):
         return self
-
-
-
-
 
     def transform(self, X, y=None):
         try:
@@ -110,9 +101,6 @@ class DataTransformation:
 
         except Exception as e:
             raise HousingException(e,sys) from e
-
-
-
 
     
 
@@ -155,10 +143,6 @@ class DataTransformation:
 
         except Exception as e:
             raise HousingException(e,sys) from e   
-
-
-
-
 
 
     def initiate_data_transformation(self)->DataTransformationArtifact:
@@ -231,9 +215,6 @@ class DataTransformation:
             return data_transformation_artifact
         except Exception as e:
             raise HousingException(e,sys) from e
-
-
-
 
     def __del__(self):
         logging.info(f"{'>>'*30}Data Transformation log completed.{'<<'*30} \n\n")

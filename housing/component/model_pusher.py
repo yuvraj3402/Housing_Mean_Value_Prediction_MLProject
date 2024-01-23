@@ -19,6 +19,10 @@ class ModelPusher:
         except Exception as e:
             raise HousingException(e, sys) from e
 
+
+
+
+
     def export_model(self) -> ModelPusherArtifact:
         try:
             evaluated_model_file_path = self.model_evaluation_artifact.evaluated_model_path
@@ -40,6 +44,10 @@ class ModelPusher:
             return model_pusher_artifact
         except Exception as e:
             raise HousingException(e, sys) from e
+
+
+
+
 
     def initiate_model_pusher(self) -> ModelPusherArtifact:
         try:

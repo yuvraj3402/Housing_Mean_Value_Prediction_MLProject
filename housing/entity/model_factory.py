@@ -14,14 +14,6 @@ from sklearn.metrics import r2_score,mean_squared_error
 
 
 
-GRID_SEARCH_KEY = 'grid_search'
-MODULE_KEY = 'module'
-CLASS_KEY = 'class'
-PARAM_KEY = 'params'
-MODEL_SELECTION_KEY = 'model_selection'
-SEARCH_PARAM_GRID_KEY = "search_param_grid"
-
-
 
 InitializedModelDetail = namedtuple("InitializedModelDetail",
                                     ["model_serial_number", "model", "param_grid_search", "model_name"])
@@ -47,8 +39,19 @@ BestModel = namedtuple("BestModel", ["model_serial_number",
 
 
 MetricInfoArtifact = namedtuple("MetricInfoArtifact",
-                                ["model_name", "model_object", "train_rmse", "test_rmse", "train_accuracy",
-                                 "test_accuracy", "model_accuracy", "index_number"])
+                                ["model_name", 
+                                 "model_object", 
+                                 "train_rmse", 
+                                 "test_rmse", 
+                                 "train_accuracy",
+                                 "test_accuracy", 
+                                 "model_accuracy", 
+                                 "index_number"])
+
+
+
+
+
 
 
 
@@ -57,26 +60,8 @@ def evaluate_classification_model(model_list: list, X_train:np.ndarray, y_train:
     pass
 
 
-def evaluate_regression_model(model_list: list, X_train:np.ndarray, y_train:np.ndarray, X_test:np.ndarray, y_test:np.ndarray, base_accuracy:float=0.6) -> MetricInfoArtifact:
-    """
-    Description:
-    This function compare multiple regression model return best model
+def evaluate_regression_model(model_list: list,X_train :np.ndarray, y_train:np.ndarray, X_test:np.ndarray, y_test:np.ndarray, base_accuracy:float=0.6) -> MetricInfoArtifact:
 
-    Params:
-    model_list: List of model
-    X_train: Training dataset input feature
-    y_train: Training dataset target feature
-    X_test: Testing dataset input feature
-    y_test: Testing dataset input feature
-
-    return
-    It retured a named tuple
-    
-    MetricInfoArtifact = namedtuple("MetricInfo",
-                                ["model_name", "model_object", "train_rmse", "test_rmse", "train_accuracy",
-                                 "test_accuracy", "model_accuracy", "index_number"])
-
-    """
     try:
         
     
@@ -102,17 +87,6 @@ def evaluate_regression_model(model_list: list, X_train:np.ndarray, y_train:np.n
             model_accuracy = (2 * (train_acc * test_acc)) / (train_acc + test_acc)
             diff_test_train_acc = abs(test_acc - train_acc)
             
-            #logging all important metric
-            logging.info(f"{'>>'*30} Score {'<<'*30}")
-            logging.info(f"Train Score\t\t Test Score\t\t Average Score")
-            logging.info(f"{train_acc}\t\t {test_acc}\t\t{model_accuracy}")
-
-            logging.info(f"{'>>'*30} Loss {'<<'*30}")
-            logging.info(f"Diff test train accuracy: [{diff_test_train_acc}].") 
-            logging.info(f"Train root mean squared error: [{train_rmse}].")
-            logging.info(f"Test root mean squared error: [{test_rmse}].")
-
-
             #if model accuracy is greater than base accuracy and train and test score is within certain thershold
             #we will accept that model as accepted model
             if model_accuracy >= base_accuracy and diff_test_train_acc < 0.05:
@@ -137,47 +111,19 @@ def evaluate_regression_model(model_list: list, X_train:np.ndarray, y_train:np.n
 
 
 
-
-def get_sample_model_config_yaml_file(export_dir: str):
-    try:
-        model_config = {
-            GRID_SEARCH_KEY: {
-                MODULE_KEY: "sklearn.model_selection",
-                CLASS_KEY: "GridSearchCV",
-                PARAM_KEY: {
-                    "cv": 3,
-                    "verbose": 1
-                }
-
-            },
-            MODEL_SELECTION_KEY: {
-                "module_0": {
-                    MODULE_KEY: "module_of_model",
-                    CLASS_KEY: "ModelClassName",
-                    PARAM_KEY:
-                        {"param_name1": "value1",
-                         "param_name2": "value2",
-                         },
-                    SEARCH_PARAM_GRID_KEY: {
-                        "param_name": ['param_value_1', 'param_value_2']
-                    }
-
-                },
-            }
-        }
-        os.makedirs(export_dir, exist_ok=True)
-        export_file_path = os.path.join(export_dir, "model.yaml")
-        with open(export_file_path, 'w') as file:
-            yaml.dump(model_config, file)
-        return export_file_path
-    except Exception as e:
-        raise HousingException(e, sys)
-
-
-
+GRID_SEARCH_KEY = 'grid_search'
+MODULE_KEY = 'module'
+CLASS_KEY = 'class'
+PARAM_KEY = 'params'
+MODEL_SELECTION_KEY = 'model_selection'
+SEARCH_PARAM_GRID_KEY = "search_param_grid"
 
 
 class ModelFactory:
+
+
+
+
     def __init__(self, model_config_path: str = None,):
         try:
             self.config: dict = ModelFactory.read_params(model_config_path)
@@ -245,16 +191,7 @@ class ModelFactory:
 
     def execute_grid_search_operation(self, initialized_model: InitializedModelDetail, input_feature,
                                       output_feature) -> GridSearchedBestModel:
-        """
-        excute_grid_search_operation(): function will perform paramter search operation and
-        it will return you the best optimistic  model with best paramter:
-        estimator: Model object
-        param_grid: dictionary of paramter to perform search operation
-        input_feature: your all input features
-        output_feature: Target/Dependent features
-        ================================================================================
-        return: Function will return GridSearchOperation object
-        """
+       
         try:
             # instantiating GridSearchCV class
             
@@ -265,6 +202,9 @@ class ModelFactory:
 
             grid_search_cv = grid_search_cv_ref(estimator=initialized_model.model,
                                                 param_grid=initialized_model.param_grid_search)
+
+
+
             grid_search_cv = ModelFactory.update_property_of_class(grid_search_cv,
                                                                    self.grid_search_property_data)
 
@@ -283,8 +223,6 @@ class ModelFactory:
             return grid_searched_best_model
         except Exception as e:
             raise HousingException(e, sys) from e
-
-
 
 
 
@@ -326,29 +264,16 @@ class ModelFactory:
 
 
 
-
-
     def initiate_best_parameter_search_for_initialized_model(self, initialized_model: InitializedModelDetail,
                                                              input_feature,
                                                              output_feature) -> GridSearchedBestModel:
-        """
-        initiate_best_model_parameter_search(): function will perform paramter search operation and
-        it will return you the best optimistic  model with best paramter:
-        estimator: Model object
-        param_grid: dictionary of paramter to perform search operation
-        input_feature: your all input features
-        output_feature: Target/Dependent features
-        ================================================================================
-        return: Function will return a GridSearchOperation
-        """
+        
         try:
             return self.execute_grid_search_operation(initialized_model=initialized_model,
                                                       input_feature=input_feature,
                                                       output_feature=output_feature)
         except Exception as e:
             raise HousingException(e, sys) from e
-
-
 
 
 
@@ -372,23 +297,6 @@ class ModelFactory:
 
 
 
-
-    @staticmethod
-    def get_model_detail(model_details: List[InitializedModelDetail],
-                         model_serial_number: str) -> InitializedModelDetail:
-        """
-        This function return ModelDetail
-        """
-        try:
-            for model_data in model_details:
-                if model_data.model_serial_number == model_serial_number:
-                    return model_data
-        except Exception as e:
-            raise HousingException(e, sys) from e
-
-
-
-
     @staticmethod
     def get_best_model_from_grid_searched_best_model_list(grid_searched_best_model_list: List[GridSearchedBestModel],
                                                           base_accuracy=0.6
@@ -399,8 +307,9 @@ class ModelFactory:
                 if base_accuracy < grid_searched_best_model.best_score:
                     logging.info(f"Acceptable model found:{grid_searched_best_model}")
                     base_accuracy = grid_searched_best_model.best_score
-
                     best_model = grid_searched_best_model
+
+
             if not best_model:
                 raise Exception(f"None of Model has base accuracy: {base_accuracy}")
             logging.info(f"Best model: {best_model}")
