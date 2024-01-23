@@ -2,11 +2,11 @@ from housing.logger import logging
 from housing.exception import HousingException
 from housing.entity.config_entity import ModelEvaluationConfig
 from housing.entity.artifact_entity import DataIngestionArtifact,DataValidationArtifact,ModelTrainerArtifact,ModelEvaluationArtifact
-from housing.constatnt import *
+from housing.constant import *
 import numpy as np
 import os
 import sys
-from housing.util.util import write_yaml_file, read_yaml_file, load_object,load_data
+from housing.util import write_yaml_file, read_yaml_file, load_object,load_data
 from housing.entity.model_factory import evaluate_regression_model
 
 
@@ -27,8 +27,6 @@ class ModelEvaluation:
         except Exception as e:
             raise HousingException(e, sys) from e
         
-
-
 
 
 
@@ -57,8 +55,6 @@ class ModelEvaluation:
             return model
         except Exception as e:
             raise HousingException(e, sys) from e
-
-
 
 
 
@@ -167,11 +163,11 @@ class ModelEvaluation:
             model_list = [model, trained_model_object]
 
             metric_info_artifact = evaluate_regression_model(model_list=model_list,
-                                                               X_train=train_dataframe,
-                                                               y_train=train_target_arr,
-                                                               X_test=test_dataframe,
-                                                               y_test=test_target_arr,
-                                                               base_accuracy=self.model_trainer_artifact.model_accuracy,
+                                                             X_train=train_dataframe,
+                                                             y_train=train_target_arr,
+                                                             X_test=test_dataframe,
+                                                             y_test=test_target_arr,
+                                                             base_accuracy=self.model_trainer_artifact.model_accuracy,
                                                                )
             logging.info(f"Model evaluation completed. model metric artifact: {metric_info_artifact}")
 

@@ -1,14 +1,15 @@
 from flask import Flask, request
+import sys
 import pip
-from housing.util.util import read_yaml_file, write_yaml_file
+from housing.util import read_yaml_file, write_yaml_file
 from matplotlib.style import context
 from housing.logger import logging
 from housing.exception import HousingException
 import os, sys
 import json
-from housing.config.configuration import configuration
-from housing.constatnt import CONFIG_DIR, get_current_time_stamp
-from housing.pipeline.pipeline import Pipeline
+from housing.config.configuration import configuration 
+from housing.constant import CONFIG_DIR, get_current_time_stamp
+from housing.pipeline import Pipeline
 from housing.entity.housing_predictor import HousingPredictor, HousingData
 from flask import send_file, abort, render_template
 
@@ -126,7 +127,7 @@ def predict():
                                    median_income=median_income,
                                    ocean_proximity=ocean_proximity,
                                    )
-        housing_df = housing_data.get_housing_input_data_frame()
+        housing_df = housing_data.get_housing_dataframe()
         housing_predictor = HousingPredictor(model_dir=MODEL_DIR)
         median_housing_value = housing_predictor.predict(X=housing_df)
         context = {

@@ -1,20 +1,21 @@
-from housing.logger import logging
 from housing.exception import HousingException
+from housing.logger import logging
+from housing.config.configuration import configuration
 from housing.entity.config_entity import DataValidationConfig
 from housing.entity.artifact_entity import DataIngestionArtifact,DataValidationArtifact
 import os,sys
-import pandas  as pd
-from evidently.model_profile import Profile
+import pandas as pd
+"""from evidently.model_profile import Profile
 from evidently.model_profile.sections import DataDriftProfileSection
 from evidently.dashboard import Dashboard
-from evidently.dashboard.tabs import DataDriftTab
+from evidently.dashboard.tabs import DataDriftTab"""
 import json
 
-class DataValidation:
-    
 
-    def __init__(self, data_validation_config:DataValidationConfig,
-        data_ingestion_artifact:DataIngestionArtifact):
+
+class DataValidation:
+    def __init__(self,data_validation_config:DataValidationConfig,
+                 data_ingestion_artifact:DataIngestionArtifact):
         try:
             logging.info(f"{'>>'*30}Data Valdaition log started.{'<<'*30} \n\n")
             self.data_validation_config = data_validation_config
@@ -33,12 +34,6 @@ class DataValidation:
             return train_df,test_df
         except Exception as e:
             raise HousingException(e,sys) from e
-
-
-
-
-
-
 
 
     def is_train_test_file_exists(self)->bool:
@@ -60,8 +55,7 @@ class DataValidation:
             if not is_available:
                 training_file = self.data_ingestion_artifact.train_file_path
                 testing_file = self.data_ingestion_artifact.test_file_path
-                message=f"Training file: {training_file} or Testing file: {testing_file}" \
-                    "is not present"
+                message=f"Training file: {training_file} or Testing file: {testing_file} is not present"
                 raise Exception(message)
 
             return is_available
@@ -70,40 +64,7 @@ class DataValidation:
 
 
 
-
-
-
-
-    
-    def validate_dataset_schema(self)->bool:
-        try:
-            validation_status = False
-            
-            #Assigment validate training and testing dataset using schema file
-            #1. Number of Column
-            #2. Check the value of ocean proximity 
-            # acceptable values     <1H OCEAN
-            # INLAND
-            # ISLAND
-            # NEAR BAY
-            # NEAR OCEAN
-            #3. Check column names
-
-
-            validation_status = True
-            return validation_status 
-        except Exception as e:
-            raise HousingException(e,sys) from e
-
-
-
-
-
-
-
-
-
-    def get_and_save_data_drift_report(self):
+    '''def get_and_save_data_drift_report(self):
         try:
             profile = Profile(sections=[DataDriftProfileSection()])
 
@@ -125,10 +86,6 @@ class DataValidation:
 
 
 
-
-
-
-
     def save_data_drift_report_page(self):
         try:
             dashboard = Dashboard(tabs=[DataDriftTab()])
@@ -146,17 +103,14 @@ class DataValidation:
 
 
 
-
-
-
+ 
     def is_data_drift_found(self)->bool:
         try:
             report = self.get_and_save_data_drift_report()
             self.save_data_drift_report_page()
             return True
         except Exception as e:
-            raise HousingException(e,sys) from e
-
+            raise HousingException(e,sys) from e'''
 
 
 
@@ -164,30 +118,9 @@ class DataValidation:
 
     def initiate_data_validation(self)->DataValidationArtifact :
         try:
-            self.is_train_test_file_exists()
-            self.validate_dataset_schema()
-            self.is_data_drift_found()
+            schema_file_path=self.data_validation_config.schema_file_path
 
-            data_validation_artifact = DataValidationArtifact(
-                schema_file_path=self.data_validation_config.schema_file_path,
-                report_file_path=self.data_validation_config.report_file_path,
-                report_page_file_path=self.data_validation_config.report_page_file_path,
-                is_validated=True,
-                message="Data Validation performed successully."
-            )
-            logging.info(f"Data validation artifact: {data_validation_artifact}")
+            data_validation_artifact = DataValidationArtifact(schema_file_path=schema_file_path)
             return data_validation_artifact
         except Exception as e:
             raise HousingException(e,sys) from e
-
-
-
-
-
-
-
-    def __del__(self):
-        logging.info(f"{'>>'*30}Data Valdaition log completed.{'<<'*30} \n\n")
-        
-
-
