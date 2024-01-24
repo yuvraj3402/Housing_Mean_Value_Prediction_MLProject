@@ -4,7 +4,7 @@ from datetime import datetime
 import pandas as pd
 
 
-LOG_DIR="housing_logs"
+LOG_DIR="logs"
 CURRENT_TIME_STAMP=datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
 LOG_FILE_NAME= f"log_{CURRENT_TIME_STAMP}.log"
 
