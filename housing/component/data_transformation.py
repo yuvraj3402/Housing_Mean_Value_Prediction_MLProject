@@ -96,7 +96,7 @@ class DataTransformation:
             test_file_path=self.data_ingestion_artifact.test_file_path
 
 
-            schema_file_path=file_path=self.data_validation_artifact.schema_file_path
+            schema_file_path=self.data_validation_artifact.schema_file_path
 
 
             train_df=load_data(file_path=training_file_path,schema_file_path=schema_file_path)

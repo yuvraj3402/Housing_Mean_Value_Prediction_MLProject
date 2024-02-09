@@ -5,7 +5,6 @@ six
 pandas
 pyYAML
 scikit-learn
-evidently
 dill
 matplotlib
 -e .
