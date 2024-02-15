@@ -2,7 +2,8 @@
 
 My first End to End Pipeline Project
 
- Automated end to end Pipeline project to Predict Housing Value
+1. Automated end to end Pipeline project to Predict Housing Value
+
 2. Follows Modular Approach
 
 3. to run the code first install requirements.txt 

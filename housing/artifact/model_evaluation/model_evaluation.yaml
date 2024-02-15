@@ -1,0 +1,7 @@
+best_model:
+  model_path: C:\Users\Admin\OneDrive\Desktop\Housing_project\Machine_learning_project\housing\artifact\model_trainer\2024-02-15-23-43-35\trained_model\model.pkl
+history:
+  2024-02-08-14-26-12:
+    model_path: C:\Users\Admin\OneDrive\Desktop\Housing_project\Machine_learning_project\housing\artifact\model_trainer\2024-02-08-11-26-54\trained_model\model.pkl
+  2024-02-15-23-43-35:
+    model_path: c:\Users\Admin\OneDrive\Desktop\Housing_project\Machine_learning_project\housing\artifact\model_trainer\2024-02-08-14-26-12\trained_model\model.pkl
